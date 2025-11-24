@@ -1,0 +1,14 @@
+{
+  "navigation": "Navigation",
+  "dashboard": "Dashboard",
+  "allExpenses": "Alle Ausgaben",
+  "categories": "Kategorien",
+  "insights": "Einblicke",
+  "settings": "Einstellungen",
+  "addExpense": "Ausgabe hinzufügen",
+  "totalSpent": "Gesamtausgaben",
+  "biggestCategory": "Größte Kategorie",
+  "remainingBudget": "Verbleibendes Budget",
+  "monthlyBudget": "Monatliches Budget",
+  "avatar": "Benutzer Avatar"
+}

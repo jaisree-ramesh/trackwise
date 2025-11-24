@@ -1,0 +1,14 @@
+{
+  "navigation": "Navigation",
+  "dashboard": "Dashboard",
+  "allExpenses": "All Expenses",
+  "categories": "Categories",
+  "insights": "Insights",
+  "settings": "Settings",
+  "addExpense": "Add Expense",
+  "totalSpent": "Total Spent",
+  "biggestCategory": "Biggest Category",
+  "remainingBudget": "Remaining Budget",
+  "monthlyBudget": "Monthly Budget",
+  "avatar":"User Avatar"
+}
