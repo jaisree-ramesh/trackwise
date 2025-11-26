@@ -19,7 +19,7 @@ export default function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { login } = useAuthActions();
-  const { setEmail, setUserName } = useSettingsActions();
+  const { setEmail } = useSettingsActions();
   const [email, setEmailValue] = useState("");
   // const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
