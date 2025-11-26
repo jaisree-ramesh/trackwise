@@ -9,8 +9,8 @@ import SidebarItem from "./sidebarItem";
 import logoLight from "../../assets/logoLight.png";
 import logoDark from "../../assets/logoDark.png";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../stores/authStore";
-import { useSettings } from "../../stores/settingsStore";
+import { useAuth, useAuthActions } from "../../stores/authStore";
+import { useSettings, useSettingsActions } from "../../stores/settingsStore";
 import {
   Tooltip,
   TooltipContent,
@@ -19,7 +19,6 @@ import {
 } from "../../components/ui/tooltip";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
-
 
 export function Sidebar() {
   const { t } = useTranslation();
@@ -34,14 +33,17 @@ export function Sidebar() {
 
   const subtitle = isAuthenticated && userName ? email : "";
 
-  // const { resetAllLocalData: resetSettings } = useSettingsActions();
+  const {  setEmail } = useSettingsActions();
+  const { logout } = useAuthActions();
 
   const handleLogout = () => {
     const ok = window.confirm(
       t("confirmLogout") || "Are you sure you want to log out?"
     );
     if (!ok) return;
-    navigate("/login");
+      logout();
+      setEmail("");
+      navigate("/login");
   };
 
   return (
