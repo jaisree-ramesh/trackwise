@@ -27,17 +27,22 @@ import {
 import { useExpenseActions } from "../../stores/expenseStore.ts";
 import { format } from "date-fns";
 import { CalendarIcon, Plus } from "lucide-react";
-
-const expenseSchema = z.object({
-  label: z.string().min(1, "Required"),
-  amount: z.number().positive("Amount must be greater than 0"),
-  category: z.string().min(1, "Required"),
-  date: z.date(),
-});
-
-type FormData = z.infer<typeof expenseSchema>;
+import { useTranslation } from "react-i18next";
+import { useSettings } from "../../stores/settingsStore";
+import { Label } from "../ui/label.tsx";
 
 export function AddExpenseModal() {
+  const { t } = useTranslation();
+  const { categories } = useSettings();
+
+  type FormData = z.infer<typeof expenseSchema>;
+  const expenseSchema = z.object({
+    label: z.string().min(1, t("required")),
+    amount: z.number().positive(t("invalidAmount")),
+    category: z.string().min(1, t("required")),
+    date: z.date(),
+  });
+
   const [open, setOpen] = useState(false);
   const { addExpense } = useExpenseActions();
 
@@ -63,34 +68,40 @@ export function AddExpenseModal() {
     form.reset();
   };
 
-  console.log("useExpenseActions:", useExpenseActions);
-
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-2">
+        <Button className="flex items-center gap-2 cursor-pointer">
           <Plus size={18} />
-          Add Expense
+          {t("addExpenseModal.addButton")}
         </Button>
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add New Expense</DialogTitle>
+          <DialogTitle>{t("addExpenseModal.title")}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-2">
           {/* LABEL */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium">Label</label>
-            <Input {...form.register("label")} placeholder="e.g., Grocery" />
+            <Label htmlFor="label" className="text-sm font-medium">
+              {t("addExpenseModal.label")}
+            </Label>
+            <Input
+              id="label"
+              {...form.register("label")}
+              placeholder="e.g., Grocery"
+            />
           </div>
 
           {/* AMOUNT */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium">Amount (€)</label>
+            <Label htmlFor="amount" className="text-sm font-medium">
+              {t("addExpenseModal.amount")} (€)
+            </Label>
             <Input
+              id="amount"
               type="number"
               step="0.01"
               {...form.register("amount", { valueAsNumber: true })}
@@ -100,7 +111,9 @@ export function AddExpenseModal() {
 
           {/* CATEGORY */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium">Category</label>
+            <Label htmlFor="category" className="text-sm font-medium">
+              {t("addExpenseModal.category")}
+            </Label>
 
             <Select
               value={form.watch("category")}
@@ -108,35 +121,48 @@ export function AddExpenseModal() {
                 form.setValue("category", v, { shouldValidate: true })
               }
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Select category" />
+              <SelectTrigger
+                id="category"
+                aria-label={t("addExpenseModal.category")}
+              >
+                <SelectValue
+                  placeholder={t("addExpenseModal.selectCategoryPlaceholder")}
+                />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Food">Food</SelectItem>
-                <SelectItem value="Transport">Transport</SelectItem>
-                <SelectItem value="Shopping">Shopping</SelectItem>
-                <SelectItem value="Bills">Bills</SelectItem>
-                <SelectItem value="Other">Other</SelectItem>
+                {categories.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
+                    {cat}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
 
           {/* DATE PICKER */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium">Date</label>
+            <Label htmlFor="date" className="text-sm font-medium">
+              {t("addExpenseModal.date")}
+            </Label>
 
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full justify-between">
+                <Button
+                  id="date"
+                  variant="outline"
+                  className="w-full justify-between"
+                  aria-label={t("addExpenseModal.date")}
+                >
                   {form.watch("date")
                     ? format(form.watch("date"), "PPP")
-                    : "Pick a date"}
+                    : t("datePicker.placeholder")}
                   <CalendarIcon className="h-4 w-4 opacity-70" />
                 </Button>
               </PopoverTrigger>
 
               <PopoverContent className="p-0">
                 <Calendar
+                  aria-label={t("addExpenseModal.date")}
                   mode="single"
                   selected={form.watch("date")}
                   onSelect={(d) =>
@@ -148,7 +174,7 @@ export function AddExpenseModal() {
           </div>
 
           <Button type="submit" className="w-full">
-            Save Expense
+            {t("addExpenseModal.addButton")}
           </Button>
         </form>
       </DialogContent>

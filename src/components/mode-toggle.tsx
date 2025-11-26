@@ -31,7 +31,8 @@ export function ModeToggle() {
       variant="outline"
       size="icon"
       onClick={toggleTheme}
-      className="relative"
+      className="relative cursor-pointer"
+      aria-label="Toggle theme"
     >
       {current === "light" ? (
         <Moon className="h-[1.2rem] w-[1.2rem] transition-all" />
