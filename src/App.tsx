@@ -16,16 +16,15 @@ function App() {
   const { language } = useSettings();
   const { i18n } = useTranslation();
 
-
   useEffect(() => {
     if (language) {
       i18n.changeLanguage(language);
     }
   }, [language, i18n]);
-  
+
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <BrowserRouter>
+      <BrowserRouter basename="/trackwise">
         <Routes>
           {/* ---------- Public Auth Routes ---------- */}
           <Route path="/login" element={<LoginPage />} />
